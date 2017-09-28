@@ -13,7 +13,7 @@ public class Practice4Test {
 	}
 	
 	
-	public void clearData() {
+	public void clearData() throws StackException {
 		while (!queue.empty()) {
 			queue.dequeue();
 		}
@@ -23,23 +23,26 @@ public class Practice4Test {
 	}
 	
 	
-	public boolean isPalindrome(String item) {
+	public boolean isPalindrome(String item) throws StackException {
 		clearData();
 		for (int i = 0; i < item.length(); i++) {
-			stack.push(item.substring(i, i+1));
-			queue.enqueue(item.substring(i, i+1));
+			if(!item.substring(i, i+1).equals(" ") && Character.isLetter(item.charAt(i))){
+				stack.push(item.substring(i, i+1));
+				queue.enqueue(item.substring(i, i+1));
+			}
+			
 		}
 
-		while (! stack.empty() && ! queue.empty()) {
-			if (! stack.pop().equals(queue.dequeue())) {
+		while (! stack.empty() && ! queue.empty()) {			
+			if(!(((String) stack.pop()).equalsIgnoreCase((String) queue.dequeue()))){
 				return false;
 			}
 		}
 		
 		// At this point, the stack AND the queue should be empty. But check in case...
-		if (!stack.empty() || ! queue.empty())
+		if (!stack.empty() || ! queue.empty()){
 			return false;
-		
+		}
 		return true;
 	}
 	
